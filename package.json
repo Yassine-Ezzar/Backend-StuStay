@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "StuStay Backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yassine-Ezzar/Back-StuStay.git"
+  },
+  "author": "yassine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yassine-Ezzar/Back-StuStay/issues"
+  },
+  "homepage": "https://github.com/Yassine-Ezzar/Back-StuStay#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
