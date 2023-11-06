@@ -1,43 +1,43 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import morgan from 'morgan';
-import cors from 'cors';
-import { notFoundError, errorHandler } from './middlewares/error-handler.js';
-import userRoutes from './routes/userRoutes.js';
-import logementRoutes from './routes/logementRoutes.js';
-import reservationRoutes from './routes/reservationRoutes.js';
-import reclamationRoutes from './routes/reclamationRoutes.js';
+const mongoose = require('mongoose');
+const express = require('express');
+const bodyParser = require('body-parser');
+const authRoute = require('./routes/AuthRoute');
+const userRoute = require('./routes/UserRoute');
+
 
 const app = express();
-const hostname = '127.0.0.1';
-const port = process.env.PORT || 9090;
-const databaseName = 'votreBaseDeDonnées'; // Remplacez par le nom de votre base de données
 
-mongoose.set('debug', true);
-mongoose.Promise = global.Promise;
-
-mongoose
-  .connect(`mongodb://${hostname}:27017/${databaseName}`)
-  .then(() => {
-    console.log(`Connecté à ${databaseName}`);
-  })
-  .catch(err => {
-    console.error(`Erreur de connexion à la base de données : ${err}`);
-  });
-
-app.use(cors());
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use('/utilisateur', userRoutes); // Remplacez par le nom de votre module utilisateur
-app.use('/logement', logementRoutes); // Remplacez par le nom de votre module logement
-app.use('/reservation', reservationRoutes); // Remplacez par le nom de votre module réservation
-app.use('/reclamation', reclamationRoutes); // Remplacez par le nom de votre module réclamation
-
-app.use(notFoundError);
-app.use(errorHandler);
-
-app.listen(port, () => {
-    console.log(`Serveur en cours d'exécution sur ${hostname}:${port}`);
+// Connect to your MongoDB database
+mongoose.connect('mongodb+srv://mahmouddriss:fOL7IeCGeoO5eMal@cluster0.scij7rk.mongodb.net/', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
 });
+
+const db = mongoose.connection;
+
+
+db.on('error', console.error.bind(console, 'Connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB');
+  // Your code here
+});
+
+// Configure Express to parse JSON
+app.use(bodyParser.json());
+app.use('/user', authRoute)
+app.use('/user', userRoute)
+
+app.use(express.static('public'));  
+app.use('/user/avatar', express.static('uploads/avatar'));
+
+
+
+const PORT = process.env.PORT || 3000
+app.listen(PORT, () => {
+  console.log('Server is running on port ' + PORT)
+})
+
+
+
+
+
