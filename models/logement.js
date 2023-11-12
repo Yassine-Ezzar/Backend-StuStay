@@ -1,5 +1,5 @@
-// models/logement.js
-const mongoose = require('mongoose');
+
+import mongoose from 'mongoose';
 
 const logementSchema = new mongoose.Schema({
   images: [String], 
@@ -12,4 +12,4 @@ const logementSchema = new mongoose.Schema({
   lieu: String, 
 });
 
-module.exports = mongoose.model('Logement', logementSchema);
+export default mongoose.model('Logement', logementSchema);

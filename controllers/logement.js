@@ -1,8 +1,8 @@
-// controllers/logementController.js
-const Logement = require('../models/logement');
 
-// Créer un nouveau logement
-exports.createLogement = async (req, res) => {
+import Logement from '../models/logement.js';
+
+
+const createLogement = async (req, res) => {
   try {
     const logement = new Logement(req.body);
     const savedLogement = await logement.save();
@@ -12,8 +12,7 @@ exports.createLogement = async (req, res) => {
   }
 };
 
-// Obtenir la liste des logements
-exports.getAllLogements = async (req, res) => {
+const getAllLogements = async (req, res) => {
   try {
     const logements = await Logement.find();
     res.json(logements);
@@ -22,8 +21,7 @@ exports.getAllLogements = async (req, res) => {
   }
 };
 
-// Obtenir un logement par ID
-exports.getLogementById = async (req, res) => {
+const getLogementById = async (req, res) => {
   try {
     const logement = await Logement.findById(req.params.id);
     if (!logement) {
@@ -35,8 +33,7 @@ exports.getLogementById = async (req, res) => {
   }
 };
 
-// Mettre à jour un logement par ID
-exports.updateLogement = async (req, res) => {
+const updateLogement = async (req, res) => {
   try {
     const updatedLogement = await Logement.findByIdAndUpdate(req.params.id, req.body, { new: true });
     if (!updatedLogement) {
@@ -48,8 +45,7 @@ exports.updateLogement = async (req, res) => {
   }
 };
 
-// Supprimer un logement par ID
-exports.deleteLogement = async (req, res) => {
+const deleteLogement = async (req, res) => {
   try {
     const deletedLogement = await Logement.findByIdAndRemove(req.params.id);
     if (!deletedLogement) {
@@ -60,3 +56,14 @@ exports.deleteLogement = async (req, res) => {
     res.status(500).json({ error: 'Erreur lors de la suppression du logement' });
   }
 };
+
+
+const logementController = {
+  createLogement,
+  getAllLogements,
+  getLogementById,
+  updateLogement,
+  deleteLogement,
+};
+
+export default logementController;

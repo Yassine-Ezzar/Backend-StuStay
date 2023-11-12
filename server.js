@@ -1,43 +1,35 @@
 import express from 'express';
 import mongoose from 'mongoose';
-import morgan from 'morgan';
-import cors from 'cors';
-import { notFoundError, errorHandler } from './middlewares/error-handler.js';
-import userRoutes from './routes/userRoutes.js';
-import logementRoutes from './routes/logementRoutes.js';
-import reservationRoutes from './routes/reservationRoutes.js';
-import reclamationRoutes from './routes/reclamationRoutes.js';
+import logementRoutes from './routes/logement.js';
 
 const app = express();
-const hostname = '127.0.0.1';
-const port = process.env.PORT || 9090;
-const databaseName = 'stustaydb'; 
+const port = process.env.PORT || 3000;
 
-mongoose.set('debug', true);
+mongoose.set("debug", true);
 mongoose.Promise = global.Promise;
 
+const databaseName = 'stustay-db';
+
+
 mongoose
-  .connect(`mongodb://${hostname}:27017/${databaseName}`)
+  .connect(`mongodb://localhost:27017/${databaseName}`)
   .then(() => {
-    console.log(`Connecté à ${databaseName}`);
+    console.log(`Connected to MongoDB: ${databaseName}`);
   })
   .catch(err => {
-    console.error(`Erreur de connexion à la base de données : ${err}`);
+    console.error(err);
   });
-
-app.use(cors());
-app.use(morgan('dev'));
+app.use('/logements', logementRoutes);
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use('/logements', logementRoutes);
 
-app.use('/utilisateur', userRoutes); 
-app.use('/logement', logementRoutes); 
-app.use('/reservation', reservationRoutes); 
-app.use('/reclamation', reclamationRoutes); 
 
-app.use(notFoundError);
-app.use(errorHandler);
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Erreur interne du serveur' });
+});
+
 
 app.listen(port, () => {
-    console.log(`Serveur en cours d'exécution sur ${hostname}:${port}`);
+  console.log(`Serveur en cours d'exécution sur le port ${port}`);
 });
