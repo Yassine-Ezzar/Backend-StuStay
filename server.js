@@ -11,7 +11,7 @@ import reclamationRoutes from './routes/reclamationRoutes.js';
 const app = express();
 const hostname = '127.0.0.1';
 const port = process.env.PORT || 9090;
-const databaseName = 'votreBaseDeDonnées'; // Remplacez par le nom de votre base de données
+const databaseName = 'votreBaseDeDonnées'; 
 
 mongoose.set('debug', true);
 mongoose.Promise = global.Promise;
@@ -30,10 +30,10 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/utilisateur', userRoutes); // Remplacez par le nom de votre module utilisateur
-app.use('/logement', logementRoutes); // Remplacez par le nom de votre module logement
-app.use('/reservation', reservationRoutes); // Remplacez par le nom de votre module réservation
-app.use('/reclamation', reclamationRoutes); // Remplacez par le nom de votre module réclamation
+app.use('/utilisateur', userRoutes); 
+app.use('/logements', logementRoutes);
+app.use('/reservation', reservationRoutes); 
+app.use('/reclamation', reclamationRoutes); 
 
 app.use(notFoundError);
 app.use(errorHandler);
